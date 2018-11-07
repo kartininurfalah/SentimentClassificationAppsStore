@@ -17,6 +17,9 @@ stemming = PorterStemmer()
 import re
 import numpy as np
 from collections import Counter
+from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
+factory = StopWordRemoverFactory()
+stopword = factory.create_stop_word_remover()
 
 data = [] 
 
@@ -36,7 +39,7 @@ with open('SentimentDatasetonAppReviewfromAppStore.csv', 'r') as f:
         # cleanWords = (re.sub(r'[.,\/#!$%\^&\*;:{}=\-_+`~()\'\"{0-9}]', ' ',row.lower()))
         
         data.append(row)
-        print(row)
+        # print(row)
 
         # data = [x.strip() for x in row]
        
@@ -44,15 +47,17 @@ with open('SentimentDatasetonAppReviewfromAppStore.csv', 'r') as f:
 
      
 def Cleaning(AllDocuments):
-    CLEANDOCUMENTS = []
+    cleandoc = []
     for i, document in enumerate(AllDocuments):
+        # print(document)
         cleanContent = []
         for j, content in enumerate(document):
+            print(content)
             if j == 0 :
                 cleanContent.append(content)
                 continue
-            stopWords = set(stopwords.words('english'))
-            cleanWords = (re.sub(r'[.,\/#!$%\^&\*;:{}=\-_+`~()\'\"{0-9}]', ' ',content.lower()))
+            stopWords = stopword.remove(content)
+            cleanWords = (re.sub(r'[.,\/#!$%\^&\*;:{}=\-_+`~()\'\"{0-9}]', ' ',stopwords.lower()))
             words = word_tokenize(cleanWords)
             wordsFilteredStemmed = []
             
@@ -62,8 +67,8 @@ def Cleaning(AllDocuments):
             
             cleanContent.append(wordsFilteredStemmed)
             
-        CLEANDOCUMENTS.append(cleanContent)
+        cleandoc.append(cleanContent)
     
-    return CLEANDOCUMENTS
+    return cleandoc
 
 datacllean = Cleaning(data)
