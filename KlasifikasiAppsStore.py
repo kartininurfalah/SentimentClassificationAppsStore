@@ -17,9 +17,9 @@ stemming = PorterStemmer()
 import re
 import numpy as np
 from collections import Counter
-from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
-factory = StopWordRemoverFactory()
-stopword = factory.create_stop_word_remover()
+# from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
+# factory = StopWordRemoverFactory()
+# stopword = factory.create_stop_word_remover()
 
 data = [] 
 
@@ -56,8 +56,8 @@ def Cleaning(AllDocuments):
             if j == 0 :
                 cleanContent.append(content)
                 continue
-            stopWords = stopword.remove(content)
-            cleanWords = (re.sub(r'[.,\/#!$%\^&\*;:{}=\-_+`~()\'\"{0-9}]', ' ',stopwords.lower()))
+            stopWords = set(stopwords.words('english'))
+            cleanWords = (re.sub(r'[.,\/#!$%\^&\*;:{}=\-_+`~()\'\"{0-9}]', ' ',content.lower()))
             words = word_tokenize(cleanWords)
             wordsFilteredStemmed = []
             
